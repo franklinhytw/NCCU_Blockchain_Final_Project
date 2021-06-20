@@ -82,29 +82,31 @@ def detail_product():
 # section_POST
 @app.route('/add_product', methods=['POST'])
 def add_product():
-    body = request.json
-    add_schema = AddProductSchema()
-    try:
-        result =  add_schema.load(body)
-    except ValidationError as error:
-        return error, 433       
+    # body = request.json
+    # add_schema = AddProductSchema()
+    # try:
+    #     result = add_schema.load(body)
+    # except ValidationError as error:
+    #     return error, 433       
 
-    contract_instance.creationProduct(result["productId"], result["name"], result["description"], 
-                            result["producer"], result["location"], transact=transaction_details)
+    contract_instance.creationProduct(request.form["productId"], request.form["name"], request.form["description"], 
+                            request.form["producer"], request.form["location"], transact=transaction_details)
+                            
     return render_template("index.html")
 
 @app.route('/add_product_component', methods=['POST'])
 def add_product_component():
-    body = request.json
-    add_schema = AddProductComponentSchema()
-    try:
-        result =  add_schema.load(body)
-    except ValidationError as error:
-        return error, 433   
+    # body = request.json
+    # add_schema = AddProductComponentSchema()
+    # try:
+    #     result =  add_schema.load(body)
+    # except ValidationError as error:
+    #     return error, 433   
 
-    contract_instance.creationProductComponent(result["productId"], result["componentId"], result["name"], result["description"], 
-                            result["producer"], result["location"], result["componentType"], transact=transaction_details)
-    return "test"
+    contract_instance.creationProductComponent(request.form["productId"], request.form["componentId"], request.form["name"], request.form["description"], 
+                            request.form["producer"], request.form["location"], request.form["componentType"], transact=transaction_details)
+
+    return render_template("index.html")
 # end_section_POST
 if __name__ == '__main__':
     # set debug=True for easy development and experimentation
