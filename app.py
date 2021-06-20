@@ -58,13 +58,28 @@ contract_instance = w3.eth.contract(
 print("Address:" + contract_address)
 
 # initialize our flask app
-app = Flask(__name__, static_url_path='', static_folder='resource')
+app = Flask(__name__, static_url_path='', static_folder='assets')
 
+# section_GET
 @app.route('/', methods=['GET'])
 def index():
-    return "test"
-    # return render_template('index.html')
+    return render_template("index.html")
 
+@app.route('/login', methods=['GET'])
+def login():
+    return render_template("login.html")
+@app.route('/product/list', methods=['GET'])
+def product_list():
+    return render_template("product/list.html")
+@app.route('/product/create', methods=['GET'])
+def create_product():
+    return render_template("product/create.html")
+@app.route('/product/<productId>')
+def detail_product():
+    return render_template("product/detail.html")
+# end_section_GET
+
+# section_POST
 @app.route('/add_product', methods=['POST'])
 def add_product():
     body = request.json
@@ -76,7 +91,7 @@ def add_product():
 
     contract_instance.creationProduct(result["productId"], result["name"], result["description"], 
                             result["producer"], result["location"], transact=transaction_details)
-    return "test"
+    return render_template("index.html")
 
 @app.route('/add_product_component', methods=['POST'])
 def add_product_component():
@@ -90,7 +105,7 @@ def add_product_component():
     contract_instance.creationProductComponent(result["productId"], result["componentId"], result["name"], result["description"], 
                             result["producer"], result["location"], result["componentType"], transact=transaction_details)
     return "test"
-
+# end_section_POST
 if __name__ == '__main__':
     # set debug=True for easy development and experimentation
     # set use_reloader=False. when this is set to True it initializes the flask app twice. usually
