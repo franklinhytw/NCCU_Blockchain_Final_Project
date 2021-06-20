@@ -4,7 +4,7 @@
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="Nav" style="background-color: #055d9c;"
      xmlns="http://www.w3.org/1999/html">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="/"style="color: white;">產品履歷 - 新增</a>
+        <a class="navbar-brand" href="/"style="color: white;">產品履歷 - 新增零件</a>
     </div>
 </nav>
 {% endblock nav %}
@@ -17,10 +17,12 @@
         <div class="row gx-0 mb-4 mb-lg-5 align-items-center ">
             <div>
                 <div class="text-center text-lg-left">
-                    <h4>新增產品</h4>
+                    <h4>新增產品零件</h4>
                     <!-- Login Form -->
-                    <form action="/add_product" method="post">
+                    <form action="/add_product_component" method="post">
                       <input type="text" id="productId" class="form-control fadeIn second" name="productId" placeholder="ID"></br>
+                      <input type="text" id="componentId" class="form-control fadeIn second" name="componentId" placeholder="零件ID"></br>
+                      <input type="text" id="componentType" class="form-control fadeIn second" name="componentType" placeholder="零件類型"></br>
                       <input type="text" id="name" class="form-control fadeIn second" name="name" placeholder="名稱"></br>
                       <input type="text" id="producer" class="form-control fadeIn second" name="producer" placeholder="製造商名稱"></br>
                       <input type="text" id="location" class="form-control fadeIn second" name="location" placeholder="製造地點"></br>

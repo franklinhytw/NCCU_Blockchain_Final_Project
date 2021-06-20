@@ -16,29 +16,29 @@
         <!-- Featured Project Row-->
         <div class="row gx-0 mb-4 mb-lg-5 align-items-center ">
                 <div class="text-center text-lg-left">
-                    <h4>顯示產品履歷</h4>
+                    <h4>產品{{product_id}}內的零件</h4>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
+                                <th scope="col">零件ID</th>
                                 <th scope="col">名稱</th>
+                                <th scope="col">零件類型</th>
                                 <th scope="col">製造商名稱</th>
                                 <th scope="col">製造地點</th>
                                 <th scope="col">敘述</th>
                                 <th scope="col">建立時間</th>
-                                <th scope="col">零件數量</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for product in product_arr %}
+                            {% for comp in comp_arr %}
                             <tr>
-                                <th scope="row">{{ product.productId }}</th>
-                                <td>{{ product.name }}</td>
-                                <td>{{ product.producer }}</td>
-                                <td>{{ product.location }}</td>
-                                <td>{{ product.description }}</td>
-                                <td>{{ product.creationDate }}</td>
-                                <td>{{ product.compnentCount }} <a href="/product/list_components?pid={{product.productId}}">詳細內容</a></td>
+                                <th scope="row">{{ comp.componentId }}</th>
+                                <td>{{ comp.name }}</td>
+                                <td>{{ comp.componentType }}</td>
+                                <td>{{ comp.producer }}</td>
+                                <td>{{ comp.location }}</td>
+                                <td>{{ comp.description }}</td>
+                                <td>{{ comp.creationDate }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

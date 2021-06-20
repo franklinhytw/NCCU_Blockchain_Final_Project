@@ -2,8 +2,9 @@ from contract import getContractIface
 from schema import *
 
 from web3 import Web3
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, redirect
 from web3.contract import ConciseContract
+import time
 
 # web3.py instance
 w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:8545"))
@@ -63,17 +64,61 @@ app = Flask(__name__, static_url_path='', static_folder='assets')
 # section_GET
 @app.route('/', methods=['GET'])
 def index():
-    return render_template("index.html")
+    return render_template("index.html", contract_address=contract_address)
 
 @app.route('/login', methods=['GET'])
 def login():
     return render_template("login.html")
+
 @app.route('/product/list', methods=['GET'])
 def product_list():
-    return render_template("product/list.html")
+    product_id_list = contract_instance.getAllProductId()
+
+    product_arr = []
+    for pid in product_id_list:
+        p = contract_instance.getProduct(pid)
+
+        time_formatted = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(p[4]))
+        obj_dict = {'productId': pid, 'name': p[0],'description': p[1],'producer': p[2],'location': p[3],'creationDate': time_formatted,'compnentCount': p[5]}
+        product_arr.append(obj_dict)
+
+    # For Debug
+    print(product_arr)
+        
+    return render_template("product/list.html", product_arr = product_arr)
+
+@app.route('/product/list_components', methods=['GET'])
+def components_list():
+    pid = request.args.get('pid')
+
+    comp_len = contract_instance.getProductComponentCount(pid)
+    comp_id_list = []
+    
+    for x in range(0, comp_len):
+        comp_id_list.append(contract_instance.getProductComponentIdAtIndex(pid, x))
+
+    component_arr = []
+
+    for cid in comp_id_list:
+        c = contract_instance.getProductComponent(pid, cid)
+
+        time_formatted = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(c[5]))
+        obj_dict = {'componentId': cid, 'name': c[0],'description': c[1],'producer': c[2],'location': c[3],'creationDate': time_formatted,'componentType': c[4]}
+        component_arr.append(obj_dict)
+
+    # For Debug
+    print(component_arr)
+        
+    return render_template("product/component_list.html", product_id = pid, comp_arr = component_arr)
+
 @app.route('/product/create', methods=['GET'])
 def create_product():
     return render_template("product/create.html")
+
+@app.route('/product/createComponent', methods=['GET'])
+def create_product_component():
+    return render_template("product/createComponent.html")
+
 @app.route('/product/<productId>')
 def detail_product():
     return render_template("product/detail.html")
@@ -91,8 +136,8 @@ def add_product():
 
     contract_instance.creationProduct(request.form["productId"], request.form["name"], request.form["description"], 
                             request.form["producer"], request.form["location"], transact=transaction_details)
-                            
-    return render_template("index.html")
+
+    return redirect('/product/create')
 
 @app.route('/add_product_component', methods=['POST'])
 def add_product_component():
@@ -106,7 +151,7 @@ def add_product_component():
     contract_instance.creationProductComponent(request.form["productId"], request.form["componentId"], request.form["name"], request.form["description"], 
                             request.form["producer"], request.form["location"], request.form["componentType"], transact=transaction_details)
 
-    return render_template("index.html")
+    return redirect('/product/createComponent')
 # end_section_POST
 if __name__ == '__main__':
     # set debug=True for easy development and experimentation
