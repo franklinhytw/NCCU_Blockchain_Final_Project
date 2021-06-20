@@ -1,0 +1,35 @@
+{% extends "shared/layout.html" %}
+{% block nav %}
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="Nav" style="background-color: #055d9c;"
+     xmlns="http://www.w3.org/1999/html">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="/"style="color: white;">PROTRACE - 新增</a>
+    </div>
+</nav>
+{% endblock nav %}
+
+{% block content %}
+<!-- Masthead-->
+<section class="projects-section bg-light" id="projects">
+    <div class="container px-4 px-lg-5">
+        <!-- Featured Project Row-->
+        <div class="row gx-0 mb-4 mb-lg-5 align-items-center ">
+            <div class="col-xl-6 col-lg-6">
+                <div class="text-center text-lg-left">
+                    <h4>新增產品</h4>
+                    <!-- Login Form -->
+                    <form action="/add_product" method="post">
+                      <input type="text" id="productId" class="form-control fadeIn second" name="productId" placeholder="ID"></br>
+                      <input type="text" id="name" class="form-control fadeIn second" name="name" placeholder="名稱"></br>
+                      <input type="text" id="producer" class="form-control fadeIn second" name="producer" placeholder="製造商名稱"></br>
+                      <input type="text" id="location" class="form-control fadeIn second" name="location" placeholder="製造地點"></br>
+                      <textarea id="description" class="form-control fadeIn second" name="description" placeholder="敘述"></textarea></br>
+                      <input type="submit" class="btn btn-primary fadeIn fourth" value="Log In">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
